@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typora彩带特效精确还原</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1e2b 0%, #252b3a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 15% 25%, rgba(66, 153, 225, 0.05) 0%, rgba(0, 0, 0, 0) 40%),
+            radial-gradient(circle at 85% 75%, rgba(139, 92, 246, 0.05) 0%, rgba(0, 0, 0, 0) 40%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            z-index: 10;
+        }
+
+        .card {
+            background: rgba(30, 34, 46, 0.75);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 50px -15px rgba(0, 0, 0, 0.45),
+            0 0 20px rgba(99, 102, 241, 0.25);
+            border: 1px solid rgba(74, 85, 104, 0.45);
+            position: relative;
+            z-index: 20;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            color: white;
+            box-shadow: 0 12px 24px rgba(76, 81, 191, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+        }
+
+        .header p {
+            opacity: 0.85;
+            max-width: 500px;
+            margin: 0 auto;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .feature {
+            background: rgba(45, 50, 65, 0.5);
+            border-radius: 14px;
+            padding: 24px;
+            border: 1px solid rgba(74, 85, 104, 0.45);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.8);
+            box-shadow: 0 8px 20px rgba(76, 81, 191, 0.35);
+        }
+
+        .feature i {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #818cf8;
+        }
+
+        .feature h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #d6dcff;
+        }
+
+        .feature p {
+            font-size: 15px;
+            opacity: 0.8;
+            line-height: 1.5;
+            color: #a3b1d0;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg,
+            transparent,
+            rgba(255, 255, 255, 0.15),
+            transparent);
+            transition: transform 0.6s ease;
+            transform: translateX(-50%) translateY(-50%) rotate(45deg);
+        }
+
+        .btn:hover::after {
+            transform: translateX(50%) translateY(50%) rotate(45deg);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.4);
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #a0aec0;
+            border: 1px solid rgba(160, 174, 192, 0.35);
+            z-index: 1;
+        }
+
+        .btn-outline:hover {
+            background: rgba(30, 34, 46, 0.65);
+            border-color: rgba(160, 174, 192, 0.6);
+        }
+
+        #confettiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            opacity: 0.65;
+            font-size: 14px;
+            color: #8695b2;
+            position: relative;
+            z-index: 5;
+        }
+
+        .particle-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 34, 46, 0.9);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 14px;
+            color: #e2e8f0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(74, 85, 104, 0.4);
+        }
+
+        .instruction {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid #6366f1;
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+            position: relative;
+            z-index: 5;
+        }
+
+        .pulse {
+            animation: pulse 0.7s ease infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 8px 15px rgba(99, 102, 241, 0.4);
+            }
+            100% {
+                transform: scale(1.05);
+                box-shadow: 0 15px 30px rgba(99, 102, 241, 0.45);
+            }
+        }
+
+        .particle-tag {
+            position: absolute;
+            top: -100px;
+            width: 24px;
+            height: 8px;
+            background: #6366f1;
+            border-radius: 4px;
+            opacity: 0;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                padding: 25px 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .btn {
+                padding: 14px 24px;
+                flex: 1;
+                min-width: 120px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+<canvas id="confettiCanvas"></canvas>
+
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-crown"></i>
+            </div>
+            <h1>彩带特效示例</h1>
+            <p>感谢您的支持，祝您度过愉快的一天</p>
+        </div>
+
+        <div class="content">
+            <div class="instruction">
+                <i class="fas fa-info-circle"></i> 点击下方按钮体验彩带特效，粒子从两侧高速向上冲至中心后如花瓣般缓缓飘落
+            </div>
+            <!--
+
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>精准物理模拟</h3>
+                    <p>准确模拟粒子上升时的喷射方向和飘落时的随机曲线路径</p>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-sync-alt"></i>
+                    <h3>循环风场运动</h3>
+                    <p>粒子在飘落过程中受到轻微的空气阻力影响，形成真实的飘动效果</p>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-layer-group"></i>
+                    <h3>深度层次效果</h3>
+                    <p>采用多层绘制和透明效果，创建深度感与立体效果</p>
+                </div>
+
+                <div class="feature">
+                    <i class="fas fa-palette"></i>
+                    <h3>真实色彩还原</h3>
+                    <p>采用Typora原版色彩方案，精确匹配紫罗兰色系渐变</p>
+                </div>
+            </div>
+            -->
+
+            <div class="btn-group">
+                <button id="triggerBtn" class="btn btn-primary">
+                    <i class="fas fa-fire"></i> 激活彩带特效
+                </button>
+                <button id="resetBtn" class="btn btn-outline">
+                    <i class="fas fa-redo"></i> 重置效果
+                </button>
+            </div>
+
+            <div class="footer">
+                <p>基于❤开发</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="confetti.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const triggerBtn = document.getElementById('triggerBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const canvasId = 'confettiCanvas';
+
+        initConfetti(canvasId); // 初始化彩带特效
+		
+		startConfetti(500);
+
+        triggerBtn.addEventListener('click', () => {
+            startConfetti(500,/*[
+  '#1E3A8A',  // 深蓝
+  '#3B82F6',  // 鲜亮蓝
+  '#60A5FA',  // 柔和蓝
+  '#93C5FD',  // 淡蓝
+  '#BFDBFE',  // 浅蓝
+  '#DBEAFE',  // 非常浅的蓝
+  '#0284C7',  // 略深的蓝
+  '#2563EB',   // 略深且偏紫的蓝
+  '#4CAF50', // Material Design Green
+  '#8BC34A', // Material Design Light Green
+  '#66BB6A', // Another variation of Green
+  '#9CCC65', // Lighter Green
+  '#388E3C', // Darker Green
+  '#7CB342', // Slightly different hue
+  '#A5D6A7', // Very Light Green
+  '#558B2F'  // Dark Olive Green
+]*/undefined,true); // 启动彩带特效
+
+            // 按钮效果
+            triggerBtn.innerHTML = `<i class="fas fa-sparkles"></i> 彩带激活中`;
+            triggerBtn.classList.add('pulse');
+
+            setTimeout(() => {
+                triggerBtn.innerHTML = `<i class="fas fa-fire"></i> 激活彩带特效`;
+                triggerBtn.classList.remove('pulse');
+            }, 3000);
+        });
+
+        resetBtn.addEventListener('click', () => {
+            stopConfetti(); // 停止彩带特效
+			startConfetti(0);
+        });
+    });
+</script>
+</body>
+</html>
